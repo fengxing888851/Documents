@@ -54,6 +54,28 @@ s.getsockopt(level, optname [, buflen])
 
 
 
+DNS
+
+socket.getaddrinfo(host, port=None[, family[, socktype[, proto[, flags]]]])   # 查询DNS的IP, host = 'www.baidu.com'
+
+socket.gethostbyaddr(ip)   #  反向查询 ip 的 DNS
+
+hostname = socket.gethostname()   #  获得主机名
+
+socket.getfqdn(hostname)      # 尽量获得完整的域名
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 一个简单的python socket编程
 
