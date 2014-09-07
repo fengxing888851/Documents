@@ -1,4 +1,6 @@
-使用Python访问网页主要有三种方式： urllib, urllib2, httplib.urllib比较简单，功能相对也比较弱，httplib简单强大，但好像不支持session
+#使用Python访问网页主要有三种方式： urllib, urllib2, httplib.urllib比较简单，功能相对也比较弱，httplib简单强大，但好像不支持session
+
+urllib2
 
 
 1. 最简单的页面访问
