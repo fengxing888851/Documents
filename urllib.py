@@ -7,7 +7,7 @@ urllib2
 
 res=urllib2.urlopen(url)
 
-print res.read()
+print res.read().decode('utf-8', 'ignore')
 
 
 2. 加上要get或post的数据
