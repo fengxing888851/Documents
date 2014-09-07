@@ -3,31 +3,31 @@
 urllib2
 
 
-1. 最简单的页面访问
+# 1. 最简单的页面访问
 
 res=urllib2.urlopen(url)
 
 print res.read().decode('utf-8', 'ignore')
 
 
-2. 加上要get或post的数据
+# 2. 加上要get或post的数据
 data={"name":"hank", "passwd":"hjz"}
 
 urllib2.urlopen(url, urllib.urlencode(data))
 
 
-3. 加上http头
+# 3. 加上http头
 
 header={"User-Agent": "Mozilla-Firefox5.0"}
 urllib2.urlopen(url, urllib.urlencode(data), header)
 
-使用opener和handler
+# 使用opener和handler
 opener = urllib2.build_opener(handler)
 
 urllib2.install_opener(opener)
 
 
-4. 加上session
+#4. 加上session
 
 cj = cookielib.CookieJar() #在内存中加载cookie
 
@@ -40,18 +40,22 @@ urllib2.install_opener(opener)
 
 
 
-5. 加上 Basic 认证
-当需要Authentication的时候，服务器发送一个头（同时还有401代码）请求Authentication。它详细指明了一个Authentication和一个域。这个头看起来像：
+#5. 加上 Basic 认证
+# 当需要Authentication的时候，服务器发送一个头（同时还有401代码）请求Authentication。
+# 它详细指明了一个Authentication和一个域。这个头看起来像：
 
 Www-authenticate: SCHEME realm=”REALM”.
 e.g.
 Www-authenticate: Basic realm=”cPanel Users”
 
-客户端然后就会用包含在头中的正确的帐户和密码重新请求这个域。这是”基本验证”。为了简化这个过程，我们可以创建一个 HTTPBasicAuthHandler和opener的实例来使用这个handler。
-HTTPBasicAuthHandler用一个叫做密码管理的对象来处理url和用户名和密码的域的映射。如果你知道域是什么（从服务器发送的authentication
-头中），那你就可以使用一个HTTPPasswordMgr。多数情况下人们不在乎域是什么。那样使用HTTPPasswordMgrWithDefaultRealm就很方便。它
-允许你为一个url具体指定用户名和密码。这将会在你没有为一个特殊的域提供一个可供选择的密码锁时提供给你。我们通过提供None作为add_password方法域的参数指出这一点。
-最高级别的url是需要authentication的第一个url。比你传递给.add_password()的url更深的url同样也会匹配。
+# 客户端然后就会用包含在头中的正确的帐户和密码重新请求这个域。这是”基本验证”。
+# 为了简化这个过程，我们可以创建一个 HTTPBasicAuthHandler和opener的实例来使用这个handler。
+# HTTPBasicAuthHandler用一个叫做密码管理的对象来处理url和用户名和密码的域的映射。
+# 如果你知道域是什么（从服务器发送的authentication头中），那你就可以使用一个HTTPPasswordMgr。
+# 多数情况下人们不在乎域是什么。那样使用HTTPPasswordMgrWithDefaultRealm就很方便。它
+# 允许你为一个url具体指定用户名和密码。这将会在你没有为一个特殊的域提供一个可供选择的密码锁时提供给你。
+# 我们通过提供None作为add_password方法域的参数指出这一点。最高级别的url是需要authentication的第一个url。
+# 比你传递给.add_password()的url更深的url同样也会匹配。
 
 password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm() # create a password manager
 top_level_url = "http://www.163.com/"
@@ -63,13 +67,13 @@ urllib2.install_opener(opener) #install the opener
 
 
 
-6. 使用代理
+# 6. 使用代理
 # opener = urllib2.OpenerDirector()
 # proxy_support = urllib2.ProxyHandler({'http': 'http://1.2.3.4:3128/'})
 # opener.add_handler(proxy_support)
 # urllib2.install_opener(opener)
 
-proxy_support = urllib2.ProxyHandler({"http":"http://1.2.3.4:3128/"})
+proxy_support = urllib2.ProxyHandler({"http":"http://1.2.3.4:3128"})
 opener = urllib2.build_opener(proxy_support)
 f = opener.open('http://www.baidu.com/')
 
@@ -94,7 +98,8 @@ socket.setdefaulttimeout(5)
 1 Proxy 的设置
 
 
-urllib2 默认会使用环境变量 http_proxy 来设置 HTTP Proxy。如果想在程序中明确控制 Proxy，而不受环境变量的影响，可以使用下面的方式
+urllib2 默认会使用环境变量 http_proxy 来设置 HTTP Proxy。如果想在程序中明确控制 Proxy，而不受环境变量的影响，
+可以使用下面的方式
 
 
 importurllib2  
@@ -114,15 +119,17 @@ else:
     opener = urllib2.build_opener(null_proxy_handler)  urllib2.install_opener(opener) 
 
 
-这里要注意的一个细节，使用 urllib2.install_opener() 会设置 urllib2 的全局 opener。这样后面的使用会很方便，但不能做更细粒度的控制，比如想在程序中使用两个不同的 Proxy 设置等。比较好的做法是不使用 install_opener 去更改全局的设置，而只是直接调用 opener 的 open 方法代替全局的 urlopen 方法。
+这里要注意的一个细节，使用 urllib2.install_opener() 会设置 urllib2 的全局 opener。这样后面的使用会很方便，
+但不能做更细粒度的控制，比如想在程序中使用两个不同的 Proxy 设置等。
+比较好的做法是不使用 install_opener 去更改全局的设置，而只是直接调用 opener 的 open 方法代替全局的 urlopen 方法。
 
 2 Timeout 设置
 
 在老版本中，urllib2 的 API 并没有暴露 Timeout 的设置，要设置 Timeout 值，只能更改 Socket 的全局 Timeout 值。
 
-importurllib2 
+import urllib2 
 
-importsocket  
+import socket  
 
 socket.setdefaulttimeout(10) # 10 秒钟后超时 
 
@@ -168,7 +175,8 @@ application/x-www-form-urlencoded ：浏览器提交 Web 表单时使用
 
 4 Redirect
 
-urllib2 默认情况下会针对 3xx HTTP 返回码自动进行 Redirect 动作，无需人工配置。要检测是否发生了 Redirect 动作，只要检查一下 Response 的 URL 和 Request 的 URL 是否一致就可以了。
+urllib2 默认情况下会针对 3xx HTTP 返回码自动进行 Redirect 动作，无需人工配置。要检测是否发生了 Redirect 动作，
+只要检查一下 Response 的 URL 和 Request 的 URL 是否一致就可以了。
 
  
 importurllib2 
@@ -179,7 +187,7 @@ response =urllib2.urlopen('http://www.google.cn')
 whether_redirected = response.geturl() == 'http://www.google.cn' 
 
 
-如果不想自动 Redirect，除了使用更低层次的 httplib 库之外，还可以使用自定义的 HTTPRedirectHandler 类。
+# 如果不想自动 Redirect，除了使用更低层次的 httplib 库之外，还可以使用自定义的 HTTPRedirectHandler 类。
 
  
 import urllib2  
@@ -225,7 +233,8 @@ for item in cookie:
 6 使用 HTTP 的 PUT 和 DELETE 方法
 
 
-urllib2 只支持 HTTP 的 GET 和 POST 方法，如果要使用 HTTP PUT 和 DELETE，只能使用比较低层的 httplib 库。虽然如此，我们还是能通过下面的方式，使 urllib2 能够发出 HTTP PUT 或 DELETE 的包：
+urllib2 只支持 HTTP 的 GET 和 POST 方法，如果要使用 HTTP PUT 和 DELETE，只能使用比较低层的 httplib 库。
+虽然如此，我们还是能通过下面的方式，使 urllib2 能够发出 HTTP PUT 或 DELETE 的包：
 
 importurllib2  
 
@@ -242,7 +251,9 @@ response = urllib2.urlopen(request)
 7 得到 HTTP 的返回码
 
 
-对于 200 OK 来说，只要使用 urlopen 返回的 response 对象的 getcode() 方法就可以得到 HTTP 的返回码。但对其它返回码来说，urlopen 会抛出异常。这时候，就要检查异常对象的 code 属性了：
+
+对于 200 OK 来说，只要使用 urlopen 返回的 response 对象的 getcode() 方法就可以得到 HTTP 的返回码。
+但对其它返回码来说，urlopen 会抛出异常。这时候，就要检查异常对象的 code 属性了：
 
 
 importurllib2 
@@ -259,7 +270,8 @@ except urllib2.HTTPError, e:
 8 Debug Log
 
 
-使用 urllib2 时，可以通过下面的方法把 Debug Log 打开，这样收发包的内容就会在屏幕上打印出来，方便我们调试，在一定程度上可以省去抓包的工作。
+使用 urllib2 时，可以通过下面的方法把 Debug Log 打开，这样收发包的内容就会在屏幕上打印出来，方便我们调试，
+在一定程度上可以省去抓包的工作。
 
 
 import urllib2 
